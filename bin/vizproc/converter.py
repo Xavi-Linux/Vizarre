@@ -1,6 +1,6 @@
 import pandas as pd
 from typing import Dict, Union, List
-from pipelines import NCAA
+from pipelines import NCAA, BasePipeline
 
 
 def exceltocsv(filepath: str, dest: str) -> None:
