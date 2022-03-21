@@ -28,7 +28,7 @@ class BasePipeline:
         if isinstance(self.data, pd.DataFrame):
             self.data.to_csv(path_or_buf=self.dest_path + self.NAME + self.EXT, index=False)
 
-            return self.dest_path + self.NAME
+            return self.dest_path + self.NAME + self.EXT
 
         elif isinstance(self.data, Dict):
             paths: List[str] = []
@@ -36,7 +36,7 @@ class BasePipeline:
                 key:str
                 value: pd.DataFrame
                 value.to_csv(path_or_buf=self.dest_path + key + self.EXT, index=False)
-                paths.append(self.dest_path + key)
+                paths.append(self.dest_path + key + self.EXT)
 
             return paths
 

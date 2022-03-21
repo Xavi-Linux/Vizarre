@@ -11,7 +11,7 @@ done
 
 ###Processing options:
 target=datasets/;
-args=$(getopt -a -o t:n:f: --long target:,name:,file: -- "$@");
+args=$(getopt -a -o t:n:f:p: --long target:,name:,file:,pipeline: -- "$@");
 
 if [[ $? -ne 0 ]]; then
  echo "invalid option";
@@ -24,6 +24,7 @@ do
     case $1 in
      -f | --file) file_path=$2; shift 2;;
      -n | --name) name=$2; shift 2;;
+     -p | --pipeline) pipeline=$2; shift 2;;
      -t | --target) target=$2; shift 2;;
      --) shift; break;;
      *) echo "Invalid option $1"; exit 2;;
@@ -41,3 +42,11 @@ mkdir -p "$target$name/cleaned";
 cp $file_path "$target$name/original/"; #Canviar a mv en acabar.
 
 #Clean data:
+declare -a csvs=$(python bin/datacleaner.py -f "$file_path" -d "$target$name/cleaned/" -p "$name");
+
+#Upload to cloud storage:
+
+for csv in ${csvs[@]};
+do
+ gsutil cp $csv "${dict[parent-bucket]}$name/";
+done
