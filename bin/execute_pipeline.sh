@@ -1,6 +1,6 @@
 # !/bin/bash
 ###Getting keys:
-keys_file=gcp.keys; #swap it for dumm.keys
+keys_file=gcp.keys; #swap it for dummy.keys
 declare -a info=$(< $keys_file);
 delimiter=':';
 declare -A dict;
@@ -14,7 +14,7 @@ target=datasets/;
 args=$(getopt -a -o t:n:f:p: --long target:,name:,file:,pipeline: -- "$@");
 
 if [[ $? -ne 0 ]]; then
- echo "invalid option";
+ echo "Invalid option";
  exit 2;
 fi
 
