@@ -1,2 +1,3 @@
 # !/bin/bash
-echo 'Hello';
+var=1;
+echo ${pipeline:-$var};

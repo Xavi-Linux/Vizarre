@@ -39,10 +39,10 @@ fi
 
 mkdir -p "$target$name/original";
 mkdir -p "$target$name/cleaned";
-cp $file_path "$target$name/original/"; #Canviar a mv en acabar.
+cp $file_path "$target$name/original/";
 
 #Clean data:
-declare -a csvs=$(python bin/datacleaner.py -f "$file_path" -d "$target$name/cleaned/" -p "$name");
+declare -a csvs=$(python bin/datacleaner.py -f "$file_path" -d "$target$name/cleaned/" -p "${pipeline:-$name}");
 
 #Upload to cloud storage:
 
