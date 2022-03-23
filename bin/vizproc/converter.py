@@ -20,9 +20,9 @@ def find_pipeline_class(pipeline: Union[None, str]) -> T:
     return BasePipeline
 
 
-def exceltocsv(file: str, dest: str, pipeline: Union[None, str]) -> Union[str, List[str]]:
+def exceltocsv(file: str, dest: str, schema_folder: str, pipeline: Union[None, str]) -> Union[str, List[str]]:
     cls: T = find_pipeline_class(pipeline)
-    dest_files: Union[str, List[str]] = cls(file, dest).save()
+    dest_files: Union[str, List[str]] = cls(file, dest, schema_folder).save()
 
     return dest_files
 

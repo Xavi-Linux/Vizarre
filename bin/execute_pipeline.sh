@@ -39,10 +39,14 @@ fi
 
 mkdir -p "$target$name/original";
 mkdir -p "$target$name/cleaned";
+mkdir -p "$target$name/schema";
+
 cp $file_path "$target$name/original/";
 
 #Clean data:
-declare -a csvs=$(python bin/datacleaner.py -f "$file_path" -d "$target$name/cleaned/" -p "${pipeline:-$name}");
+declare -a csvs=$(python bin/datacleaner.py \
+                  -f "$file_path" -d "$target$name/cleaned/" \
+                  -p "${pipeline:-$name}" -s "$target$name/schema/" );
 
 #Upload to cloud storage:
 

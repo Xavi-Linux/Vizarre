@@ -13,6 +13,8 @@ if __name__ == '__main__':
                                                  'defined in pipelines.py. If not found, it defaults to BasePipeline.',
                         default='base')
 
+    parser.add_argument('-s', '--schema_folder', help='Folder to store schemas of tables')
+
     args:Tuple[Namespace, List[str]] = parser.parse_known_args()
 
     output: Union[str, List[str]] = exceltocsv(**vars(args[0]))
