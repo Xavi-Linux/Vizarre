@@ -108,7 +108,12 @@ class NCAA(BasePipeline):
         for key, value in self.data.items():
             key: str
             value: pd.DataFrame
-            self.data[key] = value.rename(columns=lambda c: c.replace(' ', '_'))
+            self.data[key] = value.rename(columns=lambda c: c.replace(' ', '_')
+                                                             .replace(',', '_')
+                                                             .replace('/', '_')
+                                                             .replace('(', '_')
+                                                             .replace(')', '_')
+                                                             .replace('-', '_'))
 
     def transform(self) -> None:
         super(NCAA, self).transform()

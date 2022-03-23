@@ -49,8 +49,13 @@ declare -a csvs=$(python bin/datacleaner.py \
                   -p "${pipeline:-$name}" -s "$target$name/schema/" );
 
 #Upload to cloud storage:
-
 for csv in ${csvs[@]};
 do
  gsutil cp $csv "${dict[parent-bucket]}$name/";
 done
+
+#Upload to bigquery
+declare -a uris=$(gsutil ls "${dict[parent-bucket]}$name/");
+
+python bin/bqm.py -a commit -d "$name" -s "$target$name/schema" \
+                  -p "${dict[project-id]}" -l "${dict[location]}" ${uris[@]};
