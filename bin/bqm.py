@@ -1,6 +1,6 @@
 from argparse import ArgumentParser, Namespace
 from typing import List, Tuple
-from vizproc.bqtools import commit_tables
+from vizproc.bqtools import commit_tables, delete_dataset
 
 if __name__ == '__main__':
 
@@ -19,4 +19,5 @@ if __name__ == '__main__':
         commit_tables(project_id=args[0].project_id, dataset=args[0].dataset,
                       location=args[0].location, schema_path=args[0].schema_path, tables=args[0].tables)
     else:
-        print('To be implemented')
+        delete_dataset(project=args[0].project_id, dataset=args[0].dataset)
+

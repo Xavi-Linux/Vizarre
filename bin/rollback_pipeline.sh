@@ -30,6 +30,8 @@ done
 #move files back to unprocessed folder
 find "$target$name/original" -type f -exec mv -f {} "$target/unprocessed/" \;
 #remove BQ dataset
+python bin/bqm.py -a rollback -d "$name" -s "$target$name/schema" \
+                  -p "${dict[project-id]}" -l "${dict[location]}" "nothing";
 #remove bucket
 gsutil rm -r "${dict[parent-bucket]}$name/";
 #rm local directory
