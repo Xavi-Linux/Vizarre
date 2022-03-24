@@ -113,7 +113,8 @@ class NCAA(BasePipeline):
                                                              .replace('/', '_')
                                                              .replace('(', '_')
                                                              .replace(')', '_')
-                                                             .replace('-', '_'))
+                                                             .replace('-', '_')
+                                                             .replace(' ',''))
 
     def transform(self) -> None:
         super(NCAA, self).transform()

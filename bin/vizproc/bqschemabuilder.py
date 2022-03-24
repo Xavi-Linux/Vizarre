@@ -1,7 +1,7 @@
 from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.enums import SqlTypeNames
-from google.cloud.bigquery.table import Table, TableReference
+from google.cloud.bigquery.enums import SqlTypeNames, SourceFormat
 from google.cloud.bigquery.dataset import Dataset
+from google.cloud.bigquery.job import LoadJobConfig
 from typing import Dict, List, Union
 from json import load
 from pathlib import Path
@@ -44,11 +44,11 @@ class BaseBuilder:
 
     def __init__(self, tables:List[str], schema_path:str, dataset: Dataset):
         self.uri_paths: List[str] = tables
-        self.schema_paths: List[str] = list(map(lambda p: schema_path + '/' + Path(p).stem + self.EXT,
-                                                self.uri_paths))
-        self.table_ids: List[str] = list(map(lambda p: Path(p).stem,
-                                             self.uri_paths))
+        self.table_ids: List[str] = list(map(lambda p: Path(p).stem, self.uri_paths))
+        self.schema_paths: List[str] = list(map(lambda p:schema_path + '/' + p + self.EXT, self.table_ids))
+        self.uri_paths_dict: Dict[str, str] = dict(zip(self.table_ids, self.uri_paths))
         self.schemas: Dict[str, Union[None, List[SchemaField]]] = dict(zip(self.table_ids, [None] * len(self.table_ids)))
+        self.jobs: Dict[str, Union[None, LoadJobConfig]] = self.schemas.copy()
         self.dataset: Dataset = dataset
 
     def retrieve_schemas(self) -> Dict[str,List[SchemaField]]:
@@ -63,14 +63,19 @@ class BaseBuilder:
 
         return self.schemas
 
-    def retrieve_tables(self) -> Dict[str, Table]:
-        bq_tables: Dict[str, Table] = {}
+    def retrieve_jobs(self) -> Dict[str, LoadJobConfig]:
         for key, value in self.schemas.items():
             key: str
             value: List[SchemaField]
-            bq_tables[key] = Table(table_ref=TableReference(self.dataset.reference, key), schema=value)
+            self.jobs[key] = LoadJobConfig(skip_leading_rows=1, field_delimiter=',',
+                                           source_format=SourceFormat.CSV,
+                                           schema=value)
 
-        return bq_tables
+        return self.jobs
+
+    def prepare_jobs(self) -> None:
+        _: Dict[str,List[SchemaField]] = self.retrieve_schemas()
+        _: Dict[str, LoadJobConfig] = self.retrieve_jobs()
 
 
 class NCAABuilder(BaseBuilder):
@@ -97,10 +102,19 @@ class NCAABuilder(BaseBuilder):
 
         return self.schemas
 
-    def retrieve_tables(self) -> Dict[str, Table]:
-        bq_tables: Dict[str, Table] = super(NCAABuilder, self).retrieve_tables()
+    def retrieve_jobs(self) -> Dict[str, LoadJobConfig]:
+        self.jobs['finances_fact'] = LoadJobConfig(skip_leading_rows=1, field_delimiter=',',
+                                                   source_format=SourceFormat.CSV,
+                                                   schema=self.schemas['finances_fact'],
+                                                   clustering_fields=['ipeds_id', 'year'])
 
-        bq_tables['finances_fact'].clustering_fields = ['ipeds_id', 'year']
-        bq_tables['school_dim'].clustering_fields = ['ipeds_id']
+        self.jobs['school_dim'] = LoadJobConfig(skip_leading_rows=1, field_delimiter=',',
+                                                source_format=SourceFormat.CSV,
+                                                schema=self.schemas['school_dim'],
+                                                clustering_fields=['ipeds_id'])
 
-        return bq_tables
+        self.jobs['conference_dim'] = LoadJobConfig(skip_leading_rows=1, field_delimiter=',',
+                                                    source_format=SourceFormat.CSV,
+                                                    schema=self.schemas['conference_dim'])
+
+        return self.jobs

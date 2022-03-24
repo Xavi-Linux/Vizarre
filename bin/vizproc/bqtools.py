@@ -1,11 +1,9 @@
 from google.cloud.bigquery.client import Client
-from google.cloud.bigquery.job import LoadJob, LoadJobConfig
+from google.cloud.bigquery.job import LoadJob
 from google.cloud.bigquery.dataset import Dataset, DatasetReference
-from google.cloud.bigquery.table import Table
+from google.cloud.bigquery.table import TableReference
 from google.cloud.exceptions import NotFound
-from google.cloud.bigquery.schema import SchemaField
-from google.cloud.bigquery.enums import SourceFormat
-from typing import List, TypeVar, Dict
+from typing import List, TypeVar
 from .converter import find_pipeline_class
 
 T = TypeVar('T')
@@ -32,18 +30,12 @@ def commit_tables(project_id: str, dataset:str, location: str, schema_path: str,
     cls: T = find_pipeline_class(dataset, 'vizproc.bqschemabuilder')
 
     table_builder: T = cls(tables=tables, schema_path=schema_path, dataset=dt)
-    _: Dict[str,List[SchemaField]] = table_builder.retrieve_schemas()
-    bq_tables: Dict[str, Table] = table_builder.retrieve_tables()
+    table_builder.prepare_jobs()
 
-    for uri, key in zip(tables, bq_tables):
+    for table_id, uri in table_builder.uri_paths_dict.items():
+        table_id: str
         uri: str
-        key: str
-        bq_tables[key]._properties['location'] = location
-        job_config: LoadJobConfig = LoadJobConfig(skip_leading_rows=1, field_delimiter=',',
-                                                  source_format=SourceFormat.CSV,
-                                                  schema=table_builder.schemas[key],
-                                                  clustering_fields=bq_tables[key].clustering_fields)
-        job: LoadJob = client.load_table_from_uri(source_uris=uri, destination=bq_tables[key],
-                                                  location=location, job_config=job_config)
+        job: LoadJob = client.load_table_from_uri(source_uris=uri, destination=TableReference(dt.reference, table_id),
+                                                  location=location, job_config=table_builder.jobs[table_id])
         job.result()
 
