@@ -18,6 +18,28 @@ class BasePipeline:
         self.transformed: bool = False
         self.schema_saved: bool = False
 
+    def __transform_columns(self) -> None:
+        if isinstance(self.data, pd.DataFrame):
+            self.data = self.data.rename(columns=lambda c:c.replace(' ', '_')
+                                                           .replace(',', '_')
+                                                           .replace('/', '_')
+                                                           .replace('(', '_')
+                                                           .replace(')', '_')
+                                                           .replace('-', '_')
+                                                           .replace(' ', ''))
+
+        else:
+            for key, value in self.data.items():
+                key: str
+                value: pd.DataFrame
+                self.data[key] = value.rename(columns=lambda c:c.replace(' ', '_')
+                                                                .replace(',', '_')
+                                                                .replace('/', '_')
+                                                                .replace('(', '_')
+                                                                .replace(')', '_')
+                                                                .replace('-', '_')
+                                                                .replace(' ', ''))
+
     @staticmethod
     def _first_step(func: Callable[['BasePipeline'], None]) -> Callable[['BasePipeline'], None]:
         def wrapper(self: 'BasePipeline'):
@@ -62,6 +84,7 @@ class BasePipeline:
 
     @_first_step.__func__
     def transform(self) -> None:
+        self.__transform_columns()
         self.transformed = True
 
     @_second_step.__func__
@@ -104,21 +127,8 @@ class NCAA(BasePipeline):
     CONFERENCE_FIELD: str = 'FBS_Conference'
     YEAR: str = 'Year'
 
-    def __transform_columns(self) -> None:
-        for key, value in self.data.items():
-            key: str
-            value: pd.DataFrame
-            self.data[key] = value.rename(columns=lambda c: c.replace(' ', '_')
-                                                             .replace(',', '_')
-                                                             .replace('/', '_')
-                                                             .replace('(', '_')
-                                                             .replace(')', '_')
-                                                             .replace('-', '_')
-                                                             .replace(' ',''))
-
     def transform(self) -> None:
         super(NCAA, self).transform()
-        self.__transform_columns()
 
         mask = self.data['finances_fact'][self.ID_FIELD].notna() & \
                self.data['finances_fact'][self.CONFERENCE_FIELD].notna()
