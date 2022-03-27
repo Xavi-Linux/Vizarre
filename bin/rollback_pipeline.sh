@@ -1,4 +1,4 @@
-# !/bin/bash
+#!/bin/bash
 ###Getting keys:
 keys_file=gcp.keys; #swap it for dummy.keys
 declare -a info=$(< $keys_file);
