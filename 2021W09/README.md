@@ -1,0 +1,12 @@
+Source: [Link](https://www.workout-wednesday.com/2021/03/02/pbi-2021-w09/)
+
+###Requirements
+
+- Find a Power Query transformation that will change the individual lake columns into rows. You’ll end up with only three columns loaded into your data model (this comes straight from Week 7)
+- Add a line chart that displays the average coverage by year, forecasted out to the year 2030.
+- Add a second line chart that also displays average coverage by year showing anomalies at 75% sensitivity, explained by Lake. 
+- Formatting is totally up to you! We’ve been loving the creativity that the #WOW2021 community has been producing – keep it coming!
+- Answer the following questions:
+ - What is the projected average ice coverage in 2030?
+ - Which lake contributed most to data anomalies?
+
