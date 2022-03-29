@@ -1,6 +1,6 @@
 Source: [Link](https://www.workout-wednesday.com/2021/02/02/pbi-2021-w05/)
 
-###Requirements
+### Requirements
 
 - We are using a new dataset this week. Please download the starter Power BI Desktop file here. Just a quick reminder that you must be on a PC to user Power BI Desktop.
 - Note that this dataset is not built out to be a proper dimensional model. As we progress throughout the weeks we will incorporate more data modeling.

@@ -1,6 +1,6 @@
 Source: [Link](https://www.workout-wednesday.com/2021/02/24/pbi-2021-w08/)
 
-###Requirements
+### Requirements
 
 - Create a report view that allows users to toggle between the metrics Total Revenues, Total Expenses, and Total Profits. 
 - Create a Measures Table that lets you reference these values using the SWITCH() function, which you must use. 

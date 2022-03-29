@@ -42,7 +42,7 @@ def scrap_challenge(url: str) -> str:
     request: Response = get(url)
     parsed_text: BeautifulSoup = BeautifulSoup(request.text, 'html.parser')
 
-    header: str = "Source: [Link]({0})\n\n###Requirements\n\n".format(url)
+    header: str = "Source: [Link]({0})\n\n### Requirements\n\n".format(url)
     requirements: element.ResultSet = parsed_text.find_all(attrs={'class': __TARGET_REQUIREMENTS_WRAPPER})
     tags: Iterable[element.Tag] = filter(lambda t: isinstance(t, element.Tag), requirements[1].children)
     for tag in tags:

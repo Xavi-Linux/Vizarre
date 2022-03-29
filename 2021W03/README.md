@@ -1,6 +1,6 @@
 Source: [Link](https://www.workout-wednesday.com/2021/01/19/pbi-2021-w03/)
 
-###Requirements
+### Requirements
 
 - Add a slicer for [Year] to the report. 
 - Edit Interactions for the slicer to have it only slice the KPIs and bar charts (not trends)
