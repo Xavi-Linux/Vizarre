@@ -37,9 +37,12 @@ if [[ ! -e $file_path ]]; then
  exit 2;
 fi
 
-mkdir -p "$target$name/original";
-mkdir -p "$target$name/cleaned";
-mkdir -p "$target$name/schema";
+if [[ ! -d "$target$name" ]]; 
+then
+ mkdir -p "$target$name/original";
+ mkdir -p "$target$name/cleaned";
+ mkdir -p "$target$name/schema";
+fi
 
 cp $file_path "$target$name/original/";
 

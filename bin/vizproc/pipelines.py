@@ -70,7 +70,7 @@ class BasePipeline:
 
         return wrapper
 
-    def __dump(self, df: pd.DataFrame, name: str) -> None:
+    def dump(self, df: pd.DataFrame, name: str) -> None:
         columns: Dict = dict(map(lambda k: (k[0], k[1].str),
                                  df.dtypes.to_dict().items()
                                  )
@@ -92,7 +92,7 @@ class BasePipeline:
     def save_schema(self) -> None:
         self.schema_saved = True
         if isinstance(self.data, pd.DataFrame):
-            self.__dump(self.data, self.NAME)
+            self.dump(self.data, self.NAME)
 
         elif isinstance(self.data, Dict):
             for key, value in self.data.items():
@@ -140,5 +140,34 @@ class NCAA(BasePipeline):
 
         self.data['school_dim'][self.ID_FIELD] = self.data['school_dim'][self.ID_FIELD].astype(np.int32)
 
+
+class AustinPipeline(BasePipeline):
+
+    NAME: str = 'austin'
+
+    def read(self) -> None:
+        self.data = pd.read_csv(self.origin_path)
+
+    def transform(self) -> None:
+        super(AustinPipeline, self).transform()
+
+        self.data['DateTime'] = pd.to_datetime((self.data['DateTime']))
+        try:
+            self.data['Date of Birth'] = pd.to_datetime(self.data['Date of Birth'])
+
+        except KeyError:
+            pass
+
+    def save(self) -> str:
+        self.transform()
+
+        name: str = 'outcomes' if self.origin_path.find('Outcomes') > 0 else 'intakes'
+
+        super(AustinPipeline, self).dump(self.data, name)
+        self.schema_saved = True
+
+        self.data.to_csv(path_or_buf=self.dest_path + name + self.EXT, index=False)
+
+        return self.dest_path + name + self.EXT
 
 
