@@ -2,13 +2,21 @@
 
 ## Summary
 
-[Workout Wednesday](https://www.workout-wednesday.com/power-bi-challenges/)'s challenges.
+I am using this repository to exhibit my solutions for [Workout Wednesday](https://www.workout-wednesday.com/power-bi-challenges/)'s PowerBI challenges. For every solved challenge, you will find a folder holding my answer and the challenge's requirements.
 
-### How to visualise the dashboards
+Additionally, I am taking advantage of those challenges to improve my BigQuery and Google Data Studio skills. So I have also designed some dashboards in Google Data Studio with some of the available datasets. To feed Google DataStudio, I have previously uploaded the datasets to BigQuery.
 
-Unfortunately, I do not own a PowerBI Premium account, so you need download the .pbix files and execute then in PowerBI desktop.
+### How to visualise the PowerBI dashboards
 
-### Pipeline
+Unfortunately, I do not own a PowerBI Premium account, so you need to download the .pbix files and execute them in PowerBI desktop.
+
+### Google DataStudio dashboards
+
+|Dataset|Link|
+|:------|:---:|
+| ncaa  | [see](https://datastudio.google.com/s/rIuDv6tIC1U)|
+
+### Pipeline design
 
 This is the suggested ETL pipeline:
 
@@ -50,3 +58,5 @@ The name of the pipeline can be anything you want.
 ```
 
 2. If your pipeline does not fit an **Excel-to-csv** transformation, you can easily adapt the pipeline to your needs by subclassing the BasePipeline in [pipelines.py](bin/vizproc/pipelines.py). Make sure the NAME attribute name is changed to the intended value for your pipeline when running the bash script.
+
+3. Make sure that your pipelines generate a json file for each table. They help infer the schemas for Bigquery tables.
