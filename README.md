@@ -57,6 +57,6 @@ The name of the pipeline can be anything you want.
 ./bin/rollback_pipeline.sh -n name_of_the_pipeline
 ```
 
-2. If your pipeline does not fit an **Excel-to-csv** transformation, you can easily adapt the pipeline to your needs by subclassing the BasePipeline in [pipelines.py](bin/vizproc/pipelines.py). Make sure the NAME attribute name is changed to the intended value for your pipeline when running the bash script.
+2. If your pipeline does not fit an **Excel-to-csv** transformation, you can easily adapt the pipeline to your needs by subclassing the BasePipeline in [pipelines.py](bin/vizproc/pipelines.py). Make sure the NAME attribute is changed to the intended value for your pipeline when running the bash script.
 
 3. Make sure that your pipelines generate a json file for each table. They help infer the schemas for Bigquery tables.
