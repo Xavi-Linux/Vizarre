@@ -25,3 +25,12 @@ If you want to run a whole pipeline, you need:
 5. Replace XXXX values in [dummy.keys](dummy.keys) file with the requested information (GCP project id, GCP project location & an existing GCP bucket.)
 
 6. Replace value of keys_file variable in the [pipeline script](bin/execute_pipeline.sh) with dummy.keys.
+
+### How to run a pipeline
+
+1. Save the target dataset in [unprocessed folder](datasets/unprocessed/)
+2. Execute:
+
+```shell
+./bin/execute_pipeline.sh -f path/to/target/dataset -n name_of_the_pipeline
+```
