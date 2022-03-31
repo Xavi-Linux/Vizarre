@@ -4,17 +4,18 @@
 
 I am using this repository to exhibit my solutions for [Workout Wednesday](https://www.workout-wednesday.com/power-bi-challenges/)'s PowerBI challenges. For every solved challenge, you will find a folder holding my answer and the challenge's requirements.
 
-Additionally, I am taking advantage of those challenges to improve my BigQuery and Google Data Studio skills. So I have also designed some dashboards in Google Data Studio with some of the available datasets. To feed Google DataStudio, I have previously uploaded the datasets to BigQuery.
+Additionally, I am taking advantage of those challenges to improve my BigQuery and Google Data Studio skills. So I have also designed some dashboards in Google Data Studio with some of the available datasets. To feed Google Data Studio, I have previously uploaded the datasets to BigQuery.
 
 ### How to visualise the PowerBI dashboards
 
 Unfortunately, I do not own a PowerBI Premium account, so you need to download the .pbix files and execute them in PowerBI desktop.
 
-### Google DataStudio dashboards
+### Google Data Studio dashboards
 
 |Dataset|Link|
 |:------|:---:|
-| ncaa  | [see](https://datastudio.google.com/s/rIuDv6tIC1U)|
+| [ncaa](datasets/ncaa/)  | [see](https://datastudio.google.com/s/rIuDv6tIC1U)|
+| [lakes](datasets/lakes/)| [see](https://datastudio.google.com/s/rlehrHUn3bU)|
 
 ### Pipeline design
 
